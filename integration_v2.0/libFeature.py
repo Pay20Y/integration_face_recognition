@@ -24,7 +24,7 @@ init_line = np.zeros(512, dtype='double')
 
 for line in libList.readlines():
 	if num_face > 0:
-		face_path = os.path.join('Mr.Guo', line[:-1])
+		face_path = os.path.join('Mr.Xi', line[:-1])
 		print(face_path)
 		img = cv2.imread(face_path)
 		embedding_feature = model.get_feature(img)
@@ -37,4 +37,4 @@ lib_feature = np.delete(init_line, 0, axis=0)
 print('lib_feature size is: ', lib_feature.shape)
 print(lib_feature)
 
-np.save('lib_feature.npy', lib_feature)
+np.save('lib_feature_xi.npy', lib_feature)
