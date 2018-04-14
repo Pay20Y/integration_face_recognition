@@ -70,7 +70,7 @@ for file in os.listdir(image_path):
 		row_index = sim_matrix[:,ie].argmax()
 		if col_max > 0.3:
 			result_face.append(belonging(row_index))
-			result_face_location.append(col_max)
+			result_face_location.append(ie)
 
 
 
@@ -91,7 +91,7 @@ for file in os.listdir(image_path):
 	img_clone = img.copy()
 
 	# if result_face1.size == 0 or result_face2.size == 0 or result_face3.size:
-	if len(result_face):
+	if len(result_face) == 0:
 		cv2.imwrite(os.path.join(not_target_path,file), img_clone)
 		print('No target detected!')
 	else:
@@ -100,7 +100,7 @@ for file in os.listdir(image_path):
 			# write max similarity on pic
 			# max_sim_col = sim_matrix[:,i].max()
 			cv2.rectangle(img_clone, (int(bboxes[i][0]), int(bboxes[i][1])), (int(bboxes[i][2]), int(bboxes[i][3])), (0,0,0))
-			cv2.putText(img_clone, str(result_face[i]), (int(bboxes[i][0]), int(bboxes[i][0])-3), font, 1, (0,0,0), 7)
+			# cv2.putText(img_clone, str(result_face[i]), (int(bboxes[i][0]), int(bboxes[i][0])-3), font, 1, (0,0,0), 7)
 		cv2.imwrite(os.path.join(target_path,file), img_clone)
 	
 
