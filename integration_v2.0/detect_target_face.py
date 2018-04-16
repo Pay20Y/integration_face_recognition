@@ -63,13 +63,15 @@ for file in os.listdir(image_path):
 
 	sim_matrix = np.dot(lib_feature, embeddings.T) # [24 * n], n is len(embeddings)
 
-	result_face = []
+	# result_face = []
 	result_face_location = []
+	face_dict = {}
 	for ie in range(sim_matrix.shape[1]):
 		col_max = sim_matrix[:,ie].max()
 		row_index = sim_matrix[:,ie].argmax()
 		if col_max > 0.3:
-			result_face.append(belonging(row_index))
+			face_dict[ie] = belonging(row_index)
+			# result_face.append(belonging(row_index))
 			result_face_location.append(ie)
 
 
@@ -91,7 +93,7 @@ for file in os.listdir(image_path):
 	img_clone = img.copy()
 
 	# if result_face1.size == 0 or result_face2.size == 0 or result_face3.size:
-	if len(result_face) == 0:
+	if len(result_face_location) == 0:
 		cv2.imwrite(os.path.join(not_target_path,file), img_clone)
 		print('No target detected!')
 	else:
@@ -99,8 +101,9 @@ for file in os.listdir(image_path):
 		for i in result_face_location:
 			# write max similarity on pic
 			# max_sim_col = sim_matrix[:,i].max()
+			face_label = dict[i]
 			cv2.rectangle(img_clone, (int(bboxes[i][0]), int(bboxes[i][1])), (int(bboxes[i][2]), int(bboxes[i][3])), (0,0,0))
-			# cv2.putText(img_clone, str(result_face[i]), (int(bboxes[i][0]), int(bboxes[i][0])-3), font, 1, (0,0,0), 7)
+			cv2.putText(img_clone, face_label, (int(bboxes[i][0]), int(bboxes[i][0])-3), font, 1, (0,0,0), 7)
 		cv2.imwrite(os.path.join(target_path,file), img_clone)
 	
 
